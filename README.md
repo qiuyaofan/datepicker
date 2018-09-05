@@ -15,6 +15,8 @@
 ui仿vue element-ui datapicker组件，实现jquery版本。一直没找到满意的开源jquery时间插件，所以自己写一个用在项目上，并开源出来，希望对你有帮助
 
 
+ [Demo](https://qiuyaofan.github.io/datepicker/) 
+
 
 ## Browser Install
 
