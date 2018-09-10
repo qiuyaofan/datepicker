@@ -132,6 +132,17 @@ $('.J-datepicker-range').datePicker({
 
 datapicker-separate里为all.js分开的文件，想看看实现可以看这个文件夹
 
+## Config
+|参数名|默认值（可选值）|作用|类型|
+|----|-----|-----|-----|
+|format|YYYY-MM-DD HH:mm:ss|datepicker 类型| String |
+|isRange|false|是否范围选择| Boolean |
+|min|false|时间最小值| false/String |
+|max|false|时间最大值| false/String |
+|hasShortcut|false|是否开启快捷选项| Boolean |
+|shortcutOptions|[]|快捷选项配置参数|Array |
+| between |false| 开始和结束值之间的时间间隔天数（只对范围有效）| false/Number |
+
 ## Browser Support
 
 ![browser support](./images/browser.png "browser support")

@@ -11,14 +11,30 @@ $.extend(Day.prototype, {
   },
   eventSingle: function () {
     // 点击选择日期
-    this.picker.$container.on('click', '.c-datepicker-date-table td.available', function () {
-      var _this = API.getPicker($(this), 'day');
-      if ($(this).hasClass('disabled')) {
+    this.picker.$container.on('click', '.c-datepicker-date-table td.available', function (event) {
+      event.stopPropagation();
+      var $this = $(this);
+      var _this = API.getPicker($this, 'day');
+      if ($this.hasClass('disabled')) {
         return;
       }
-      var activeNum = $(this).text();
+      if (_this.picker.isBlur) {
+        var $wrap = $this.parents('.c-datepicker-picker__content');
+        var index = $wrap.find('.c-datepicker-date-table td').index($this);
+        $.sub('datapickerClick', function (e) {
+          $this = $wrap.find('.c-datepicker-date-table td').eq(index);
+          clickDate(_this, $this);
+          $.unsub('datapickerClick');
+        });
+        $.pub('datapickerRenderPicker');
+      } else {
+        clickDate(_this, $this);
+      }
+    })
+    function clickDate(_this, $target) {
+      var activeNum = $target.text();
       _this.picker.$container.find('.c-datepicker-date-table td.current').removeClass('current');
-      $(this).addClass('current');
+      $target.addClass('current');
       var val = _this.picker.$container.find('.c-datePicker__input-day').val();
       if (!val) {
         var time = moment().format(_this.picker.config.format).split(' ')[1];
@@ -33,7 +49,7 @@ $.extend(Day.prototype, {
       } else {
         API.judgeTimeRange(_this.picker, _this.picker.$container.find('.c-datePicker__input-day'), _this.picker.$container.find('.c-datePicker__input-time'));
       }
-    })
+    }
     // 设置选中值
     function setValue(activeNum, input, inputDay) {
       var year = this.picker.$container.find('.c-datepicker-date-picker__header-year span').text();
@@ -48,18 +64,35 @@ $.extend(Day.prototype, {
   },
   eventRange: function () {
     // 点击选择日期
-    this.picker.$container.on('click', '.c-datepicker-date-table td.available', function () {
-      if ($(this).hasClass('disabled')) {
+    this.picker.$container.on('click', '.c-datepicker-date-table td.available', function (event) {
+      event.stopPropagation();
+      var $this = $(this);
+      if ($this.hasClass('disabled')) {
         return;
       }
+      var _this = API.getPicker($this, 'day');
+      if (_this.picker.isBlur) {
+        var $wrap = $this.parents('.c-datepicker-date-range-picker-panel__wrap');
+        var index = $wrap.find('td').index($this);
+        $.sub('datapickerClick', function (e) {
+          $this = $wrap.find('td').eq(index);
+          clickDateRange(_this, $this);
+          $.unsub('datapickerClick');
+        });
+        $.pub('datapickerRenderPicker');
+      } else {
+        clickDateRange(_this, $this);
+      }
+    })
 
-      var _this = API.getPicker($(this), 'day');
+    function clickDateRange(_this, $target) {
+      // var _this = API.getPicker($(this), 'day');
       var $wrap = _this.picker.$container.find('.c-datepicker-date-range-picker-panel__wrap');
       $wrap.find('td.current.hover').removeClass('current hover');
       var $current = $wrap.find('td.current');
 
-      var $activeWrap = $(this).parents('.c-datepicker-date-range-picker-panel__wrap');
-      var date = $(this).find('.cell').text();
+      var $activeWrap = $target.parents('.c-datepicker-date-range-picker-panel__wrap');
+      var date = $target.find('.cell').text();
       var $day = _this.picker.$container.find('.c-datePicker__input-day');
       var $time = _this.picker.$container.find('.c-datePicker__input-time');
       var year = $activeWrap.find('.c-datepicker-date-range-picker__header-year span').text();
@@ -72,7 +105,7 @@ $.extend(Day.prototype, {
         _this.current = 0;
       }
       if (!_this.current) {
-        $(this).addClass('current');
+        $target.addClass('current');
         var inputVal = moment().set({ 'year': year, 'month': month, 'date': date }).format(_this.picker.config.format.split(' ')[0]);
         $day.val(inputVal);
         $time.eq(0).val(_this.picker.timeMin);
@@ -80,7 +113,7 @@ $.extend(Day.prototype, {
         _this.current = 1;
       } else if (_this.current == 1) {
         // 选完两个
-        $(this).addClass('current');
+        $target.addClass('current');
         var existDate = $day.eq(0).val();
         var inputVal = moment().set({ 'year': year, 'month': month, 'date': date }).format(_this.picker.config.format.split(' ')[0]);
         var a = moment(API.newDateFixed(_this.picker, existDate));
@@ -114,7 +147,7 @@ $.extend(Day.prototype, {
         var index = _this.current - 1;
         API.judgeTimeRange(_this.picker, _this.picker.$container.find('.c-datePicker__input-day').eq(index), _this.picker.$container.find('.c-datePicker__input-time').eq(index), index);
       }
-    })
+    }
 
     // 移动渲染范围模式，前提是只有一个current时
     this.picker.$container.on('mouseenter', '.c-datepicker-date-table td.available', function () {
@@ -177,7 +210,9 @@ $.extend(Day.prototype, {
       }
       this.addCurrentSingle();
       this.show();
-      this.eventSingle();
+      if (!reRender) {
+        this.eventSingle();
+      }
     }
   },
   addCurrentSingle: function () {
@@ -246,6 +281,8 @@ $.extend(Day.prototype, {
     var $month = this.picker.$container.find('.c-datepicker-date-picker__header-month');
     var year = Number($year.find('span').text());
     var month = Number($month.find('span').text());
+    var day = this.picker.$container.find('.c-datePicker__input-day').val();
+    var dayFormat = API.getTimeFormat(moment(API.newDateFixed(this.picker, day)));
     var count = 1;
     if (moveType === 'prev') {
       count = -1;
@@ -258,7 +295,11 @@ $.extend(Day.prototype, {
       month = result.month;
       year = result.year;
     }
-    var html = this.renderHtml(year, month, false);
+    var date = false;
+    if (dayFormat.year == year && dayFormat.month == month) {
+      date = dayFormat.day;
+    }
+    var html = this.renderHtml(year, month, date);
     // 日历头部
     $year.find('span').text(year);
     $month.find('span').text(month);

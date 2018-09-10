@@ -42,6 +42,7 @@ $.extend(Month.prototype, {
     this.picker.$container.find('.c-datepicker-date-picker__prev-btn.month,.c-datepicker-date-picker__next-btn.month').show();
     this.picker.$container.find('.c-datepicker-date-picker__header-month').show();
     this.picker.$container.find('.c-datepicker-month-table').hide();
+    this.picker.$container.find('.c-datepicker-date-picker__prev-btn.year,.c-datepicker-date-picker__next-btn.year').removeClass('is-month');
   },
   render: function () {
     var html = this.renderHtml();

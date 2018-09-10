@@ -2,13 +2,14 @@
 var defaultOptions = {
   min: false,
   max: false,
-  rangeSeparator: '-',
   format: 'YYYY-MM-DD HH:mm:ss',
   isRange: false,
   hasShortcut: false,
   shortcutOptions: [],
   // between:数字：30，string:month/year
-  between: false
+  between: false,
+  hide: function () { },
+  show: function () { }
 };
 
 var API = {
@@ -349,3 +350,20 @@ var DATEPICKERMAINTPL = '<div class="c-datepicker-picker c-datepicker-date-picke
 var EVERYMONTHHASDAY = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 var MONTHWORDS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
   /*==============END API============*/
+
+/*===============BEGIN 发布订阅==================*/
+// 全局组件：pub/sub
+var o = $({});
+
+$.sub = function () {
+  o.on.apply(o, arguments);
+};
+
+$.unsub = function () {
+  o.off.apply(o, arguments);
+};
+
+$.pub = function () {
+  o.trigger.apply(o, arguments);
+};
+  /*===============END 发布订阅==================*/
