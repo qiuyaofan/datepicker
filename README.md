@@ -142,6 +142,8 @@ datapicker-separate里为all.js分开的文件，想看看实现可以看这个�
 |hasShortcut|false|是否开启快捷选项| Boolean |
 |shortcutOptions|[]|快捷选项配置参数|Array |
 | between |false| 开始和结束值之间的时间间隔天数（只对范围有效）| false/Number |
+| hide |function| 时间插件选择框隐藏时调用这个函数| function |
+| show |function| 时间插件选择框显示后调用这个函数| function |
 
 ## Browser Support
 
