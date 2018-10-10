@@ -113,6 +113,7 @@ var API = {
       val += ' ' + _this.$container.find('.c-datePicker__input-time').eq(index).val();
     }
     if (!_this.config.min && !_this.config.max) {
+      val = val.split(' ')[0];
       return {
         val: val,
         result: result

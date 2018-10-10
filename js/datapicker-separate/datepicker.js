@@ -122,7 +122,7 @@ var DATEPICKERAPI = {
       var resultJson = API.minMaxFill(_this, result, index);
       result = resultJson.result;
       // 填充值
-      target.value = resultJson.val.split(' ')[0];
+      target.value = resultJson.val;
       // this.value = result.year + _this.splitStr + API.fillTime(month + 1) + _this.splitStr + API.fillTime(result.day);
       var rangeYears = [], rangeMonths = [], rangeDates = [];
       rangeYears[index] = result.year;
