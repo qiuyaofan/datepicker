@@ -138,8 +138,8 @@
     <script src="js/datapicker-separate/time.js"></script>
     <script src="js/datapicker-separate/datepicker.js"></script> -->
 
-    <!-- <script src="js/datepicker.all.js"></script> -->
-    <script src="js/datepicker.all.min.js"></script>
+    <script src="js/datepicker.all.js"></script>
+    <!-- <script src="js/datepicker.all.min.js"></script> -->
     <script type="text/javascript">
       $(function(){
         var DATAPICKERAPI = {
@@ -278,7 +278,10 @@
               name: '最近三个月',
               day: '-90, 0',
               time: '00:00:00,'
-            }]
+            }],
+            hide: function () {
+              console.info(this.$input.eq(0).val(), this.$input.eq(1).val())
+            }
           });
           //十分秒年月日范围，限制只能选择同一月，比如2018-10-01到2018-10-30
           $('.J-datepicker-range-betweenMonth').datePicker({

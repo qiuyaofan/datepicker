@@ -490,7 +490,11 @@ $.extend(Day.prototype, {
     var $end = $wrap.find('.end-date');
     $current.addClass('in-range');
     // 选中的都在
-    if ($current.length === 2) {
+    // 同一个
+    if ($start.is($end)) {
+      $start.addClass('in-range');
+      return;
+    }else if ($current.length === 2) {
       var $startTr = $start.parents('tr');
       var $endTr = $end.parents('tr');
       // 同一页
