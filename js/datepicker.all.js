@@ -1345,6 +1345,17 @@ $(function () {
     })
     $('.c-datepicker-picker').hide();
   });
+
+  // 父级div.c-datepicker-box滚动，日期选择框跟随input滚动
+  $('.c-datepicker-box').scroll(scrollSetContainerPos);
+  function scrollSetContainerPos() {
+    $('.c-datepicker-picker').each(function (i, panel) {
+      var _this = $(panel).data('picker');
+      if ($(panel).css('display') === 'block') {
+        setContainerPos(_this.datePickerObject);
+      }
+    })
+  }
   
   var DATEPICKERAPI={
     // 初始化年月日十分秒panel
@@ -2174,12 +2185,7 @@ $(function () {
       });
     },
     show: function () {
-      var offset = this.$target.offset();
-      var height = this.$target.outerHeight();
-      this.pickerObject.$container.css({
-        top: offset.top + height,
-        left: offset.left
-      });
+      setContainerPos(this);
       $('.c-datepicker-picker').hide();
       this.pickerObject.show();
       this.config.show.call(this.pickerObject);
@@ -2233,6 +2239,15 @@ $(function () {
       }
     }
   });
+  // 设置日期选择框位置
+  function setContainerPos(_this) {
+    var offset = _this.$target.offset();
+    var height = _this.$target.outerHeight();
+    _this.pickerObject.$container.css({
+      top: offset.top + height,
+      left: offset.left
+    });
+  }
   function fillTime(_this, $time) {
     // 修复满足格式但不完全符合的time格式修正
     var time = $time.val();
