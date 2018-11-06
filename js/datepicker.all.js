@@ -1387,6 +1387,7 @@ $(function () {
         if (_this.params.format[1]) {
           _this.monthObject = new Month(_this);
           if (!_this.params.format[2]) {
+            _this.$container.find('.c-datepicker-date-picker__prev-btn.month,.c-datepicker-date-picker__next-btn.month').hide();
             _this.monthObject.render(month);
           }
         }
