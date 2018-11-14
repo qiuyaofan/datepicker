@@ -174,8 +174,8 @@ $(function () {
       }
       var val = day + ' ' + time;
       var _moment = moment(API.newDateFixed(_this,val));
-      var isBefore = _moment.isBefore((API.newDateFixed(_this,_this.config.min)));
-      var isAfter = _moment.isAfter((API.newDateFixed(_this,_this.config.max)));
+      var isBefore = _this.config.min ? _moment.isBefore((API.newDateFixed(_this, _this.config.min))) : false;
+      var isAfter = _this.config.max ? _moment.isAfter((API.newDateFixed(_this, _this.config.max))) : false;
       if (!isBefore && !isAfter) {
         return;
       }
@@ -826,7 +826,7 @@ $(function () {
         // 选中间隔月份
         var monthEnd = month[index] + distance;
         var yearEnd = year[index];
-        if (countFn()) {
+        if (countFn(monthEnd)) {
           monthEnd = initMonth;
           yearEnd = yearEnd + distance;
         }
@@ -881,6 +881,7 @@ $(function () {
       $month.find('span').text(month);
       var $content = this.picker.$container.find('.c-datepicker-picker__content');
       var $table = $content.find('.c-datepicker-date-table');
+      this.picker.$container.find('.c-datepicker-month-table,.c-datepicker-year-table').hide();
       if ($table.length) {
         $table.replaceWith(html);
       } else {
@@ -900,18 +901,16 @@ $(function () {
       }
       if (type === 'year') {
         year = year + count;
-        endYear = year;
       } else if (type === 'month') {
         month = month + count;
-        var result = API.fillMonth(month, year);
-        month = result.month;
-        year = result.year;
-        endMonth = month + 1;
-        var endResult = API.fillMonth(endMonth, year);
-        endMonth = endResult.month;
-        endYear = endResult.year;
       }
-
+      var result = API.fillMonth(month, year);
+      month = result.month;
+      year = result.year;
+      endMonth = month + 1;
+      var endResult = API.fillMonth(endMonth, year);
+      endMonth = endResult.month;
+      endYear = endResult.year;
 
       var html = this.renderHtml(year, month, false);
       var htmlEnd = this.renderHtml(endYear, endMonth, false);
@@ -955,11 +954,11 @@ $(function () {
       // active day 
       var hasMin = this.picker.minJson ? true : false;
       var hasMax = this.picker.maxJson ? true : false;
-      var minMonth = moment(API.newDateFixed(this.picker,this.picker.minJson.year + this.picker.splitStr + this.picker.minJson.month));
-      var maxMonth = moment(API.newDateFixed(this.picker,this.picker.maxJson.year + this.picker.splitStr + this.picker.maxJson.month));
+      var minMonth = hasMin ? moment(API.newDateFixed(this.picker, this.picker.minJson.year + this.picker.splitStr + this.picker.minJson.month + this.picker.splitStr + 1)) : false;
+      var maxMonth = hasMax ? moment(API.newDateFixed(this.picker, this.picker.maxJson.year + this.picker.splitStr + this.picker.maxJson.month + this.picker.splitStr + 1)) : false;
       var disabledName = '';
       var isSame = false;
-      var nowDate = moment(API.newDateFixed(this.picker,year + this.picker.splitStr + month));
+      var nowDate = moment(API.newDateFixed(this.picker, year + this.picker.splitStr + month + this.picker.splitStr + 1));
       // 不在范围内
       if ((hasMin && nowDate.isBefore(minMonth)) || (hasMax && nowDate.isAfter(maxMonth))) {
         disabledName = ' disabled';
@@ -1891,15 +1890,6 @@ $(function () {
       this.$container.on('click', '.c-datepicker-date-range-picker__next-btn.month', function () {
         var _this = API.getPicker($(this));
         renderYearMonth(_this, 'next', 'month');
-        // if (_this.picker.isBlur) {
-        //   $.sub('datapickerClick', function (e) {
-        //    _this.dayObject.prevNextRender('next', 'month');
-        //     $.unsub('datapickerClick');
-        //   });
-        //   $.pub('datapickerRenderPicker');
-        // } else {
-        //  _this.dayObject.prevNextRender('next', 'month');
-        // }
       })
       // 上一月
       this.$container.on('click', '.c-datepicker-date-range-picker__prev-btn.month', function () {

@@ -564,15 +564,6 @@ $.extend(RangeDatePicker.prototype, {
     this.$container.on('click', '.c-datepicker-date-range-picker__next-btn.month', function () {
       var _this = API.getPicker($(this));
       renderYearMonth(_this, 'next', 'month');
-      // if (_this.picker.isBlur) {
-      //   $.sub('datapickerClick', function (e) {
-      //    _this.dayObject.prevNextRender('next', 'month');
-      //     $.unsub('datapickerClick');
-      //   });
-      //   $.pub('datapickerRenderPicker');
-      // } else {
-      //  _this.dayObject.prevNextRender('next', 'month');
-      // }
     })
     // 上一月
     this.$container.on('click', '.c-datepicker-date-range-picker__prev-btn.month', function () {

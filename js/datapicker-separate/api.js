@@ -169,8 +169,8 @@ var API = {
     }
     var val = day + ' ' + time;
     var _moment = moment(API.newDateFixed(_this, val));
-    var isBefore = _moment.isBefore((API.newDateFixed(_this, _this.config.min)));
-    var isAfter = _moment.isAfter((API.newDateFixed(_this, _this.config.max)));
+    var isBefore = _this.config.min?_moment.isBefore((API.newDateFixed(_this, _this.config.min))):false;
+    var isAfter = _this.config.max?_moment.isAfter((API.newDateFixed(_this, _this.config.max))):false;
     if (!isBefore && !isAfter) {
       return;
     }

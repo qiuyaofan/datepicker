@@ -23,6 +23,10 @@
       body{
         height:1000px;
       }
+      .c999{
+        color:#999;
+        font-size:12px;
+      }
       
     </style>
 </head>
@@ -30,14 +34,14 @@
     <div class="p20">
       
       <div class="mt40">
-        <div>年月日单个选择，无最大最小值</div>
+        <div>年月日单个选择，无最大最小值 <span class="c999">(YYYY-MM-DD 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-day mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input type="text" autocomplete="off" name="" placeholder="选择日期" class=" c-datepicker-data-input only-date" value="">
         </div>
       </div>
       <div class="mt40">
-        <div>年月日范围选择，无最大最小值</div>
+        <div>年月日范围选择，无最大最小值 <span class="c999">(YYYY-MM-DD 范围)</span></div>
         <div class="c-datepicker-date-editor  J-datepicker-range-day mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" value="">
@@ -47,7 +51,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日范围选择，无最大最小值</div>
+        <div>年月日范围选择，无最大最小值 <span class="c999">(YYYY-MM-DD 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range-day mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" value="">
@@ -57,14 +61,14 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分秒单个选择，最大值：2018-01-01 04:00:00 ，最小值：2019-04-29 20:59:59</div>
+        <div>年月日十分秒单个选择，最小值：2018-01-01 04:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input type="text" autocomplete="off" name="" placeholder="选择日期" class=" c-datepicker-data-input" value="2019-04-29 20:59:59">
         </div>
       </div>
       <div class="mt40">
-        <div>年月日十分秒范围选择，最大值：2018-01-01 06:00:00 ，最小值：2019-04-29 20:59:59</div>
+        <div>年月日十分秒范围选择，最小值：2018-01-01 06:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="2018-01-01 04:00:00">
@@ -74,7 +78,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分秒范围选择，开始结束限制在一个自然月内</div>
+        <div>年月日十分秒范围选择，开始结束限制在一个自然月内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range-betweenMonth mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="">
@@ -84,7 +88,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分秒范围选择，开始结束限制在30天内</div>
+        <div>年月日十分秒范围选择，开始结束限制在30天内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range-between30 mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="">
@@ -94,7 +98,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分单个选择</div>
+        <div>年月日十分单个选择 <span class="c999">(YYYY-MM-DD HH:mm 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepickerTime-single mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input type="text" autocomplete="off" name="" placeholder="选择日期" class=" c-datepicker-data-input" value="">
@@ -102,7 +106,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分范围选择</div>
+        <div>年月日十分范围选择 <span class="c999">(YYYY-MM-DD HH:mm 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepickerTime-range mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="">
@@ -112,7 +116,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月单个选择，最大值：2018-01，最小值：2019-04</div>
+        <div>年月单个选择，最大值：2018-01，最小值：2019-04 <span class="c999">(YYYY-MM 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-yearMonthPicker-single mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input type="text" autocomplete="off" name="" placeholder="选择年月" class=" c-datepicker-data-input" value="">
@@ -120,7 +124,7 @@
       </div>
 
       <div class="mt40">
-        <div>年单个选择，最大值：2018，最小值：2019</div>
+        <div>年单个选择，最大值：2018，最小值：2019 <span class="c999">(YYYY 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-yearPicker-single mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input type="text" autocomplete="off" name="" placeholder="选择年份" class=" c-datepicker-data-input" value="">
