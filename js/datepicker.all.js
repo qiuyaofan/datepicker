@@ -810,17 +810,18 @@ $(function () {
     },
     // 显示和选中值有联动关系，和输入框修改日期有关
     renderRange: function (year, month, today, baseEnd, reRender) {
-      var $year = this.picker.$container.find('.c-datepicker-date-table');
-      if ($year.length && !reRender) {
+      var $dateTable = this.picker.$container.find('.c-datepicker-date-table');
+      if ($dateTable.length && !reRender) {
         this.show();
       } else {
         var index = 0, distance = 1, countFn = API.maxMonth, initMonth = 1;
-        if (baseEnd) {
-          index = 1;
-          distance = -1;
-          countFn = API.minMonth;
-          initMonth = 12;
-        }
+        // 去掉 不需要
+        // if (baseEnd) {
+        //   index = 1;
+        //   distance = -1;
+        //   countFn = API.minMonth;
+        //   initMonth = 12;
+        // }
         // today[index]
         var html = this.renderHtml(year[index], month[index], false);
         // 选中间隔月份
@@ -833,11 +834,11 @@ $(function () {
         var htmlEnd = this.renderHtml(yearEnd, monthEnd, false);
 
         // 日历头部
-        var $year = this.picker.$container.find('.c-datepicker-date-range-picker__header-year');
+        var $dateTable = this.picker.$container.find('.c-datepicker-date-range-picker__header-year');
         var $month = this.picker.$container.find('.c-datepicker-date-range-picker__header-month');
-        $year.eq(index).find('span').text(year[index]);
+        $dateTable.eq(index).find('span').text(year[index]);
         $month.eq(index).find('span').text(month[index]);
-        $year.eq(1 - index).find('span').text(yearEnd);
+        $dateTable.eq(1 - index).find('span').text(yearEnd);
         $month.eq(1 - index).find('span').text(monthEnd);
 
         this.picker.$container.find('.c-datepicker-picker__content').eq(index).html(html);
