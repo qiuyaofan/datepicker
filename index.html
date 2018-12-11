@@ -61,14 +61,14 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分秒单个选择，最小值：2018-01-01 04:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 单个)</span></div>
+        <div>年月日时分秒单个选择，最小值：2018-01-01 04:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input type="text" autocomplete="off" name="" placeholder="选择日期" class=" c-datepicker-data-input" value="2019-04-29 20:59:59">
         </div>
       </div>
       <div class="mt40">
-        <div>年月日十分秒范围选择，最小值：2018-01-01 06:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
+        <div>年月日时分秒范围选择，最小值：2018-01-01 06:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="2018-01-01 04:00:00">
@@ -78,7 +78,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分秒范围选择，开始结束限制在一个自然月内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
+        <div>年月日时分秒范围选择，开始结束限制在一个自然月内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range-betweenMonth mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="">
@@ -88,7 +88,7 @@
       </div>
 
       <div class="mt40">
-        <div>年月日十分秒范围选择，开始结束限制在30天内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
+        <div>年月日时分秒范围选择，开始结束限制在30天内 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
         <div class="c-datepicker-date-editor J-datepicker-range-between30 mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="">
@@ -231,7 +231,7 @@
             day: '-7'
           }]
         };
-          //十分秒年月日单个
+          //时分秒年月日单个
           $('.J-datepicker').datePicker({
             hasShortcut:true,
             min:'2018-01-01 04:00:00',
@@ -287,7 +287,7 @@
             isRange: true
           });
           
-          //十分秒年月日范围，包含最大最小值
+          //时分秒年月日范围，包含最大最小值
           $('.J-datepicker-range').datePicker({
             hasShortcut: true,
             min: '2018-01-01 06:00:00',
@@ -314,7 +314,7 @@
               console.info(this.$input.eq(0).val(), this.$input.eq(1).val())
             }
           });
-          //十分秒年月日范围，限制只能选择同一月，比如2018-10-01到2018-10-30
+          //时分秒年月日范围，限制只能选择同一月，比如2018-10-01到2018-10-30
           $('.J-datepicker-range-betweenMonth').datePicker({
             isRange: true,
             between:'month',
@@ -322,7 +322,7 @@
             shortcutOptions: DATAPICKERAPI.rangeMonthShortcutOption1()
           });
           
-          //十分秒年月日范围，限制开始结束相隔天数小于30天
+          //时分秒年月日范围，限制开始结束相隔天数小于30天
           $('.J-datepicker-range-between30').datePicker({
             isRange: true,
             between: 30
