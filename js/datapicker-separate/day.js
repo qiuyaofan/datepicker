@@ -45,7 +45,7 @@ $.extend(Day.prototype, {
         setValue.call(_this, activeNum, moment(API.newDateFixed(_this.picker, val)), moment(API.newDateFixed(_this.picker, inputVal)));
       }
       if (!_this.picker.hasTime) {
-        _this.picker.datePickerObject.hide();
+        _this.picker.datePickerObject.hide('choose');
       } else {
         API.judgeTimeRange(_this.picker, _this.picker.$container.find('.c-datePicker__input-day'), _this.picker.$container.find('.c-datePicker__input-time'));
       }
@@ -129,7 +129,7 @@ $.extend(Day.prototype, {
           _this.current = 2;
           _this.picker.$inputBegin.val(existDate);
           _this.picker.$inputEnd.val(inputVal);
-          _this.picker.datePickerObject.hide();
+          _this.picker.datePickerObject.hide('choose');
         } else {
           // 有十分秒，则选添加选择范围样式
           if (b.diff(a) < 0) {

@@ -145,11 +145,28 @@ datapicker-separate里为all.js分开的文件，想看看实现可以看这个�
 | hide |function| 时间插件选择框隐藏时调用这个函数| function |
 | show |function| 时间插件选择框显示后调用这个函数| function |
 
+❤️新增：hide函数返回类型
+
+|参数名|含义解释|
+|----|-----|
+|choose|点击选择后关闭（单选无时分秒选择日期，'YYYY'选择年，'YYYY-MM'选择月）|
+|confirm|点击确定按钮关闭|
+|shortcut|选择快捷选项，此刻等关闭|
+|clickBody|点击body关闭|
+```
+hide:function(type){
+	console.info(type);
+}
+```
+
+
 ## Browser Support
 
 ![browser support](./images/browser.png "browser support")
 
 ## Changelog
+
+2018-01-09：添加hide回调函数类型
 
 2018-09-17：添加支持父级div.c-datepicker-box滚动，日期选择框跟随input滚动
 

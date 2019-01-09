@@ -24,7 +24,7 @@ $.extend(Year.prototype, {
           _this.picker.$input.val(activeNum);
           _this.picker.$container.find('.c-datepicker-year-table td.current').removeClass('current');
           $(this).addClass('current');
-          _this.picker.datePickerObject.hide();
+          _this.picker.datePickerObject.hide('choose');
         } else {
           _this.picker.monthObject.render();
           _this.hide();

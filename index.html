@@ -69,6 +69,7 @@
       </div>
       <div class="mt40">
         <div>年月日时分秒范围选择，最小值：2018-01-01 06:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 范围)</span></div>
+        <div>打开控制台，观察关闭的hide类型</div>
         <div class="c-datepicker-date-editor J-datepicker-range mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
           <input placeholder="开始日期" name="" class="c-datepicker-data-input" value="2018-01-01 04:00:00">
@@ -310,8 +311,9 @@
               day: '-90, 0',
               time: '00:00:00,'
             }],
-            hide: function () {
-              console.info(this.$input.eq(0).val(), this.$input.eq(1).val())
+            hide: function (type) {
+              console.info(this.$input.eq(0).val(), this.$input.eq(1).val());
+              console.info('类型：',type)
             }
           });
           //时分秒年月日范围，限制只能选择同一月，比如2018-10-01到2018-10-30

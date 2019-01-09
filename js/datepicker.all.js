@@ -400,7 +400,7 @@ $(function () {
             _this.picker.$input.val(activeNum);
             _this.picker.$container.find('.c-datepicker-year-table td.current').removeClass('current');
             $(this).addClass('current');
-            _this.picker.datePickerObject.hide();
+            _this.picker.datePickerObject.hide('choose');
           } else {
             _this.picker.monthObject.render();
             _this.hide();
@@ -491,7 +491,7 @@ $(function () {
             _this.picker.$input.val(val);
             _this.picker.$container.find('.c-datepicker-month-table td.current').removeClass('current');
             $(this).addClass('current');
-            _this.picker.datePickerObject.hide();
+            _this.picker.datePickerObject.hide('choose');
           } else {
             _this.picker.dayObject.renderSingle(year, month, false, true);
             _this.hide();
@@ -621,7 +621,7 @@ $(function () {
           setValue.call(_this, activeNum, moment(API.newDateFixed(_this.picker, val)), moment(API.newDateFixed(_this.picker, inputVal)));
         }
         if (!_this.picker.hasTime) {
-          _this.picker.datePickerObject.hide();
+          _this.picker.datePickerObject.hide('choose');
         } else {
           API.judgeTimeRange(_this.picker, _this.picker.$container.find('.c-datePicker__input-day'), _this.picker.$container.find('.c-datePicker__input-time'));
         }
@@ -705,7 +705,7 @@ $(function () {
             _this.current = 2;
             _this.picker.$inputBegin.val(existDate);
             _this.picker.$inputEnd.val(inputVal);
-            _this.picker.datePickerObject.hide();
+            _this.picker.datePickerObject.hide('choose');
           } else {
             // 有十分秒，则选添加选择范围样式
             if (b.diff(a) < 0) {
@@ -1338,7 +1338,7 @@ $(function () {
         if (_this.hasTime) {
           $(panel).find('.c-datepicker-time-panel').hide();
         }
-        _this.config.hide.call(_this);
+        _this.config.hide.call(_this,'clickBody');
         _this.datePickerObject.betweenHandle();
       }
 
@@ -1679,7 +1679,7 @@ $(function () {
       this.$container.on('click', '.c-datepicker-picker__btn-now', function () {
         var _this = API.getPicker($(this));
         setValue(_this, moment().format(_this.config.format));
-        _this.datePickerObject.hide();
+        _this.datePickerObject.hide('shortcut');
       });
 
       // 点击清空
@@ -1700,7 +1700,7 @@ $(function () {
           }
         }
         setValue(_this, result);
-        _this.datePickerObject.hide();
+        _this.datePickerObject.hide('shortcut');
       });
 
       // 点击确定
@@ -1709,7 +1709,7 @@ $(function () {
         if (!_this.$input.val()) {
           setValue(_this, moment().format(_this.config.format));
         }
-        _this.datePickerObject.hide();
+        _this.datePickerObject.hide('confirm');
       });
     },
     eventHasTime: function () {
@@ -1942,7 +1942,7 @@ $(function () {
         }
         _this.$inputBegin.val(begin);
         _this.$inputEnd.val(end);
-        _this.datePickerObject.hide();
+        _this.datePickerObject.hide('shortcut');
         // setValue(_this, result);
       });
 
@@ -1954,7 +1954,7 @@ $(function () {
         var start = $days.eq(0).val();
         var end = $days.eq(1).val();
         if (!start||!end){
-          _this.datePickerObject.hide();
+          _this.datePickerObject.hide('confirm');
           return;
         }
         if (_this.hasTime) {
@@ -1963,7 +1963,7 @@ $(function () {
         }
         _this.$inputBegin.val(start);
         _this.$inputEnd.val(end);
-        _this.datePickerObject.hide();
+        _this.datePickerObject.hide('confirm');
       });
     },
     eventHasTime: function () {
@@ -2182,13 +2182,13 @@ $(function () {
       this.pickerObject.show();
       this.config.show.call(this.pickerObject);
     },
-    hide: function () {
+    hide: function (type) {
       // 判断输入框没有值
       this.pickerObject.$container.find('.td.available').removeClass('current in-range');
       this.pickerObject.$container.find('.c-datepicker-time-panel').hide();
       this.pickerObject.$container.hide();
       this.betweenHandle();
-      this.config.hide.call(this.pickerObject);
+      this.config.hide.call(this.pickerObject, type);
     },
     betweenHandle: function () {
       var _config = this.config;

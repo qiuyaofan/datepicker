@@ -352,7 +352,7 @@ $.extend(SingleDatePicker.prototype, {
     this.$container.on('click', '.c-datepicker-picker__btn-now', function () {
       var _this = API.getPicker($(this));
       setValue(_this, moment().format(_this.config.format));
-      _this.datePickerObject.hide();
+      _this.datePickerObject.hide('shortcut');
     });
 
     // 点击清空
@@ -373,7 +373,7 @@ $.extend(SingleDatePicker.prototype, {
         }
       }
       setValue(_this, result);
-      _this.datePickerObject.hide();
+      _this.datePickerObject.hide('shortcut');
     });
 
     // 点击确定
@@ -382,7 +382,7 @@ $.extend(SingleDatePicker.prototype, {
       if (!_this.$input.val()) {
         setValue(_this, moment().format(_this.config.format));
       }
-      _this.datePickerObject.hide();
+      _this.datePickerObject.hide('confirm');
     });
   },
   eventHasTime: function () {
@@ -615,7 +615,7 @@ $.extend(RangeDatePicker.prototype, {
       }
       _this.$inputBegin.val(begin);
       _this.$inputEnd.val(end);
-      _this.datePickerObject.hide();
+      _this.datePickerObject.hide('shortcut');
       // setValue(_this, result);
     });
 
@@ -627,7 +627,7 @@ $.extend(RangeDatePicker.prototype, {
       var start = $days.eq(0).val();
       var end = $days.eq(1).val();
       if (!start || !end) {
-        _this.datePickerObject.hide();
+        _this.datePickerObject.hide('confirm');
         return;
       }
       if (_this.hasTime) {
@@ -636,7 +636,7 @@ $.extend(RangeDatePicker.prototype, {
       }
       _this.$inputBegin.val(start);
       _this.$inputEnd.val(end);
-      _this.datePickerObject.hide();
+      _this.datePickerObject.hide('confirm');
     });
   },
   eventHasTime: function () {
@@ -855,13 +855,13 @@ $.extend(DatePicker.prototype, {
     this.pickerObject.show();
     this.config.show.call(this.pickerObject);
   },
-  hide: function () {
+  hide: function (type) {
     // 判断输入框没有值
     this.pickerObject.$container.find('.td.available').removeClass('current in-range');
     this.pickerObject.$container.find('.c-datepicker-time-panel').hide();
     this.pickerObject.$container.hide();
     this.betweenHandle();
-    this.config.hide.call(this.pickerObject);
+    this.config.hide.call(this.pickerObject, type);
   },
   betweenHandle: function () {
     var _config = this.config;
