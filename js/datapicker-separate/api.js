@@ -88,7 +88,7 @@ var API = {
   },
   newDateFixed: function (_this, temp) {
     var reg = new RegExp(_this.splitStr, 'g');
-    return temp ? new Date(temp.replace(reg, '/')) : new Date();
+    return !temp ? new Date() : _this.splitStr ? new Date(temp.replace(reg, '/')) : new Date(temp);
   },
   // 范围获取具体年月日
   getRangeTimeFormat: function (_this, $input) {
