@@ -606,11 +606,20 @@ $.extend(RangeDatePicker.prototype, {
       var end = moment().add(days[1], 'day').format(_this.config.format);
       if (_this.hasTime) {
         var times = $(this).data('time').split(',');
-        if (times[0]) {
-          begin = begin.split(' ')[0] + ' ' + times[0];
+       if (times[0]) {
+          if (times[0].length === 19){
+            begin = times[0];
+          } else {
+            begin = begin.split(' ')[0] + ' ' + times[0];
+          }
+
         }
         if (times[1]) {
-          end = end.split(' ')[0] + ' ' + times[1];
+          if (times[1].length === 19){
+            end = times[1];
+          } else {
+            end = end.split(' ')[0] + ' ' + times[1];
+          }
         }
       }
       _this.$inputBegin.val(begin);
