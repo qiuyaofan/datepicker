@@ -295,6 +295,10 @@
             max: '2019-04-29 20:59:59',
             isRange: true,
             shortcutOptions: [{
+                name: '最近18小时',
+                day: '0, 0',
+                time: [moment().subtract(18,'h').format("YYYY-MM-DD HH:mm:ss"), moment().format("YYYY-MM-DD HH:mm:ss")]
+            },{
               name: '昨天',
               day: '-1,-1',
               time: '00:00:00,23:59:59'
