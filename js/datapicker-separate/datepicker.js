@@ -237,7 +237,9 @@ $.extend(SingleDatePicker.prototype, {
     var val = this.$input.val().split(' ');
     this.$container.find('.c-datePicker__input-day').val(val[0]);
     this.$container.find('.c-datePicker__input-time').val(val[1]);
-
+    if (getMomentWhenEmpty(this).type!=='active'){
+      this.$container.find('.c-datepicker-picker__btn-now').remove();
+    }
 
   },
   event: function () {
@@ -375,12 +377,14 @@ $.extend(SingleDatePicker.prototype, {
       setValue(_this, result);
       _this.datePickerObject.hide('shortcut');
     });
+    
 
     // 点击确定
     this.$container.on('click', '.c-datepicker-picker__link-btn.confirm', function () {
       var _this = API.getPicker($(this));
       if (!_this.$input.val()) {
-        setValue(_this, moment().format(_this.config.format));
+        var _moment = getMomentWhenEmpty(_this).value;
+        setValue(_this, _moment);
       }
       _this.datePickerObject.hide('confirm');
     });
@@ -974,6 +978,24 @@ function setValue(_this, date) {
   }
 }
 
+// 单个：填充表单时当选的值为空时，自动填充的值
+function getMomentWhenEmpty(_this) {
+  var _moment,type;
+  if (_this.config.min && moment().isBefore(moment(_this.config.min))) {
+    _moment = moment(_this.config.min).format(_this.config.format);
+    type='min';
+  } else if (_this.config.max && moment().isAfter(moment(_this.config.max))) {
+    _moment = moment(_this.config.max).format(_this.config.format);
+    type = 'max';
+  } else {
+    _moment = moment().format(_this.config.format);
+    type = 'active';
+  }
+  return {
+    value:_moment,
+    type:type
+  };
+}
 /*========END 渲染表格===========*/
 $.fn.datePicker = function (options) {
   return this.each(function () {
