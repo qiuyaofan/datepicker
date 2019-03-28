@@ -92,8 +92,11 @@ $(function () {
       }
     },
     newDateFixed: function (_this, temp) {
+      var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      // Safari 年月模式只能用-,其他用/
+      var str = !isSafari || (isSafari && _this.config.format === 'YYYY-MM') ? '-' : '/';
       var reg = new RegExp(_this.splitStr, 'g');
-      return !temp ? new Date() : _this.splitStr ? new Date(temp.replace(reg, '/')) : new Date(temp);
+      return !temp ? new Date() : _this.splitStr ? new Date(temp.replace(reg, str)) : new Date(temp);
     },
     // 范围获取具体年月日
     getRangeTimeFormat: function (_this,$input) {
@@ -2306,11 +2309,13 @@ $(function () {
   // 单个：填充表单时当选的值为空时，自动填充的值
   function getMomentWhenEmpty(_this) {
     var _moment, type;
-    if (_this.config.min && moment().isBefore(moment(_this.config.min))) {
-      _moment = moment(_this.config.min).format(_this.config.format);
+    var momentMin = moment(_this.config.min,_this.config.format);
+    var momentMax = moment(_this.config.max, _this.config.format);
+    if (_this.config.min && moment().isBefore(momentMin)) {
+      _moment = momentMin.format(_this.config.format);
       type = 'min';
-    } else if (_this.config.max && moment().isAfter(moment(_this.config.max))) {
-      _moment = moment(_this.config.max).format(_this.config.format);
+    } else if (_this.config.max && moment().isAfter(momentMax)) {
+      _moment = momentMax.format(_this.config.format);
       type = 'max';
     } else {
       _moment = moment().format(_this.config.format);

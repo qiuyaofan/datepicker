@@ -980,20 +980,22 @@ function setValue(_this, date) {
 
 // 单个：填充表单时当选的值为空时，自动填充的值
 function getMomentWhenEmpty(_this) {
-  var _moment,type;
-  if (_this.config.min && moment().isBefore(moment(_this.config.min))) {
-    _moment = moment(_this.config.min).format(_this.config.format);
-    type='min';
-  } else if (_this.config.max && moment().isAfter(moment(_this.config.max))) {
-    _moment = moment(_this.config.max).format(_this.config.format);
+  var _moment, type;
+  var momentMin = moment(_this.config.min, _this.config.format);
+  var momentMax = moment(_this.config.max, _this.config.format);
+  if (_this.config.min && moment().isBefore(momentMin)) {
+    _moment = momentMin.format(_this.config.format);
+    type = 'min';
+  } else if (_this.config.max && moment().isAfter(momentMax)) {
+    _moment = momentMax.format(_this.config.format);
     type = 'max';
   } else {
     _moment = moment().format(_this.config.format);
     type = 'active';
   }
   return {
-    value:_moment,
-    type:type
+    value: _moment,
+    type: type
   };
 }
 /*========END 渲染表格===========*/
