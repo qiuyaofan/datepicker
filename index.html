@@ -32,7 +32,23 @@
 </head>
 <body >
     <div class="p20">
-      
+      <div class="mt40">
+        <div>（❤️新增）时分秒单个选择，最小值：04:23:11 <span class="c999">(HH:mm:ss 单个)</span></div>
+        <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-time mt10">
+          <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
+          <input type="text" autocomplete="off" name="" placeholder="选择时间" class=" c-datepicker-data-input only-time"
+            value="">
+        </div>
+      </div>
+      <div class="mt40">
+        <div>（❤️新增）时分秒范围选择，最小值：04:23:11 ，最大值：20:59:59 <span class="c999">(HH:mm:ss 范围)</span></div>
+        <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-time-range mt10">
+          <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
+          <input placeholder="开始时间" name="" class="c-datepicker-data-input only-time" value="">
+          <span class="c-datepicker-range-separator">-</span>
+          <input placeholder="结束时间" name="" class="c-datepicker-data-input only-time" value="">
+        </div>
+      </div>
       <div class="mt40">
         <div>年月日单个选择，无最大最小值 <span class="c999">(YYYY-MM-DD 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-day mt10">
@@ -131,7 +147,7 @@
           <input type="text" autocomplete="off" name="" placeholder="选择年份" class=" c-datepicker-data-input" value="">
         </div>
       </div>
-      <div class="c-datepicker-box mt40" style="height:300px;overflow: auto;background: #fdf2d7;padding: 20px;">
+      <div class="c-datepicker-box mt40" style="height:300px;overflow: auto; background: #dfeeff;padding: 20px;">
         父元素滚动，日期选择框跟随input滚动例子<br>
         父元素div.c-datepicker-box，样式：height:300px;overflow: auto; <br><br>
         占位 <br><br>
@@ -168,12 +184,26 @@
     <script src="js/datapicker-separate/month.js"></script>
     <script src="js/datapicker-separate/day.js"></script>
     <script src="js/datapicker-separate/time.js"></script>
-    <script src="js/datapicker-separate/datepicker.js"></script> -->
+    <script src="js/datapicker-separate/time-only-time.js"></script>
+    <script src="js/datapicker-separate/datepicker.js"></script>
+    <script src="js/datapicker-separate/datepicker-only-time.js"></script> -->
 
     <script src="js/datepicker.all.js"></script>
     <!-- <script src="js/datepicker.all.min.js"></script> -->
     <script type="text/javascript">
+     
       $(function(){
+        //选择时分秒
+        $('.J-datepicker-time').datePicker({
+          format: 'HH:mm:ss',
+          min: '04:23:11'
+        });
+        $('.J-datepicker-time-range').datePicker({
+          format: 'HH:mm:ss',
+          isRange: true,
+          min: '04:23:11',
+          max: '20:59:59'
+        });
         var DATAPICKERAPI = {
           // 默认input显示当前月,自己获取后填充
           activeMonthRange: function () {
@@ -354,7 +384,10 @@
           $('.J-yearMonthPicker-single').datePicker({
             format: 'YYYY-MM',
             min: '2018-01',
-            max: '2019-04'
+            max: '2019-04',
+            hide: function (type) {
+              console.info(this.$input.eq(0).val());
+            }
           });
           
           //选择年

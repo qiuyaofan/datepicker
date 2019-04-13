@@ -1,5 +1,6 @@
 @import "iconfont";
 $theme-color: #20A0FF darken(#20A0FF, 6.5%) lighten(#20A0FF, 6.5%);
+
 a {
   color: #20A0FF;
 }
@@ -18,6 +19,7 @@ a {
   width: 296px;
   position: absolute;
   z-index: 2001;
+
   *:before,
   *:after {
     -webkit-box-sizing: border-box;
@@ -35,9 +37,27 @@ a {
   line-height: 30px;
   margin: 5px 0;
   display: none;
+
   a {
     color: #333;
   }
+}
+
+.c-datepicker-picker.only-time {
+  width: 150px;
+
+  .c-datepicker-time-panel {
+    position: relative;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  .c-datepicker-date-picker__time-header,
+  .c-datepicker-date-picker__editor-wrap {
+    padding: 0;
+  }
+
+
 }
 
 .c-datepicker-date-picker.has-time .c-datepicker-picker__body-wrapper {
@@ -110,6 +130,7 @@ a {
   font-size: 0;
   position: relative;
   overflow: hidden;
+
   &:before,
   &:after {
     content: "";
@@ -159,6 +180,7 @@ a {
 .c-datepicker-scrollbar {
   overflow: hidden;
   position: relative;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -197,6 +219,14 @@ a {
   line-height: 32px;
   font-size: 12px;
   color: #333;
+
+  &.disabled {
+    color: #999;
+
+    &:hover {
+      cursor: no-drop;
+    }
+  }
 }
 
 .c-datepicker-scrollbar__bar.is-horizontal {
@@ -416,6 +446,10 @@ a {
   padding-right: 0;
 }
 
+.c-datepicker-picker__btn-cancel {
+  color: #999;
+}
+
 .popper__arrow {
   top: -6px;
   left: 50%;
@@ -463,6 +497,7 @@ a {
 .c-datepicker-picker__icon-btn {
   cursor: pointer;
   padding: 2px 7px;
+
   &:hover {
     color: #409eff;
   }
@@ -600,6 +635,25 @@ a {
 // 范围选择
 .c-datepicker-date-range-picker {
   width: 532px;
+
+}
+
+.c-datepicker-only-time-title {
+  text-align: center;
+}
+
+.c-datepicker-date-range-picker.only-time {
+  width: 400px;
+
+  .c-datepicker-time-panel {
+    position: relative;
+  }
+
+
+
+  .c-datepicker-time-panel {
+    box-shadow: none;
+  }
 }
 
 .c-datepicker-date-range-picker-panel__wrap {
@@ -646,6 +700,7 @@ a {
     margin-left: 66px;
     margin-right: 10px;
   }
+
   .c-datepicker-date-range-picker__header-month {
     margin-right: 10px;
   }
@@ -655,6 +710,7 @@ a {
   .c-datepicker-date-range-picker__header-year {
     margin-left: 12px;
   }
+
   .c-datepicker-date-range-picker__header-month {
     margin-left: 10px;
   }
@@ -681,12 +737,17 @@ a {
   vertical-align: top;
   background-color: #fff;
 }
-div.c-datepicker-data-input{
+
+div.c-datepicker-data-input {
   line-height: 34px;
 }
 
 .c-datepicker-data-input.only-date {
   width: 86px;
+}
+
+.c-datepicker-data-input.only-time {
+  width: 60px;
 }
 
 .c-datepicker-single-editor .c-datepicker-data-input {

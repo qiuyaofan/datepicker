@@ -13,9 +13,16 @@ var defaultOptions = {
 };
 
 var API = {
+  onlytimeReg: function (format){
+    return /^HH:mm(:ss)?$/.test(format);
+  },
+  // 获取时分秒格式
+  getFormatTime: function (_this) {
+    return _this.onlyTime ? _this.config.format : _this.config.format.split(' ')[1];
+  },
   // 时分秒格式正则
   timeReg: function (_this) {
-    var format = _this.config.format.split(' ')[1];
+    var format = API.getFormatTime(_this);
     var regText = format.replace(/HH/, '([0-9]{1,2})').replace(/:/g, '(:?)').replace(/(mm|ss)/g, '([0-9]{1,2})');
     return new RegExp('^' + regText + '$');
   },
@@ -85,6 +92,13 @@ var API = {
       month: _moment.month() + 1,
       day: _moment.date()
     }
+  },
+  // 获取时分秒
+  getOnlyTimeFormat: function (_moment) {
+    return [_moment.hour(),_moment.minute(),_moment.second()];
+  },
+  getConcatTime(hour, minute, second){
+    return API.fillTime(hour) + ':' + API.fillTime(minute) + ':' + API.fillTime(second);
   },
   newDateFixed: function (_this, temp) {
     var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -189,7 +203,7 @@ var API = {
     }
   },
   timeVal: function (_this, type) {
-    var timeFormat = _this.config.format.split(' ')[1];
+    var timeFormat = _this.onlyTime ? _this.config.format:_this.config.format.split(' ')[1];
     return type === 'min' ? timeFormat.replace(/HH/, '00').replace(/mm/, '00').replace(/ss/, '00') : timeFormat.replace(/HH/, '23').replace(/mm/, '59').replace(/ss/, '59');
   },
   getScrollBarWidth: function () {
@@ -216,6 +230,53 @@ var API = {
       barWidth = 15;
     }
     return barWidth;
+  },
+  getOnlyTimeMinMax: function (_this){
+    var min = _this.config.min;
+    var max = _this.config.max;
+    var emptyVal=void(0);
+    var minJson={
+      hour:emptyVal,
+      minute:emptyVal,
+      second:emptyVal
+    };
+    var maxJson = {
+      hour: emptyVal,
+      minute: emptyVal,
+      second: emptyVal
+    };
+    var hasMin = min && min.match(API.timeReg(_this));
+    var hasMax = max && max.match(API.timeReg(_this));
+    var hasMinMax = hasMax && hasMin ? true : hasMax ? 'max' : hasMin?'min':false;
+    if (hasMin) {
+      var _min =min.split(':');
+      minJson.hour = Number(_min[0]);
+      minJson.minute = Number(_min[1]);
+      minJson.second = Number(_min[2]);
+    }
+    if (hasMax) {
+      var _max = max.split(':');
+      maxJson.hour = Number(_max[0]);
+      maxJson.minute = Number(_max[1]);
+      maxJson.second = Number(_max[2]);
+    }
+    var minSecond = hasMin ? API.countSecond(min.split(':')) : void (0);
+    var maxSecond = hasMax ? API.countSecond(max.split(':')) : void (0);
+    return {
+      min: minJson,
+      max: maxJson,
+      hasMin: hasMin,
+      hasMax: hasMax,
+      hasMinMax: hasMinMax,
+      minSecond: minSecond,
+      maxSecond: maxSecond,
+      minVal: min,
+      maxVal: max
+    }
+  },
+  countSecond: function (result){
+    return result.length === 2 ? result = Number(result[0]) * 60 + Number(result[1]) : result.length === 3 ? result = Number(result[0]) * 3600 + Number(result[1]) * 60 + Number(result[2]) : false;
+
   }
 };
 var JQTABLESCROLLWIDTH = API.getScrollBarWidth();
@@ -299,6 +360,10 @@ var PICKERTIMEHEADERTPL = '<span class="{{className}}__editor-wrap">' +
   '<input type="text" autocomplete="off" placeholder="选择时间" class="c-datepicker-input__inner c-datePicker__input-time">' +
   '</div>' +
   '</span>';
+// 只有时分秒
+var PICKEROLNLYTIMEHEADERTPL = '<span class="{{className}}__editor-wrap">' +
+  '<div class="c-datepicker-only-time-title">{{name}}</div>'+
+  '</span>';
 //  范围
 var RANGEPICKERMAINTPL = '<div class="c-datepicker-picker c-datepicker-date-range-picker c-datepicker-popper {{hasTime}} {{hasSidebar}}" x-placement="top-start">' +
   '<div class="c-datepicker-picker__body-wrapper">' +
@@ -332,6 +397,42 @@ var RANGEPICKERMAINTPL = '<div class="c-datepicker-picker c-datepicker-date-rang
   PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-clear').replace(/{{text}}/g, '清空') +
   PICKERARROWTPL +
   '</div>';
+//  范围-只有时分秒
+var PICKERFOOTERONLYTIMETPL = '<div class="c-datepicker-picker__footer" style="">' +
+  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini  c-datepicker-picker__btn-clear">' +
+  '<span>' +
+  '清空' +
+  '</span>' +
+  '</button>' +
+  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini  c-datepicker-picker__btn-cancel">' +
+  '<span>' +
+  '取消' +
+  '</span>' +
+  '</button>' +
+  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
+  '<span>' +
+  '确定' +
+  '</span>' +
+  '</button>' +
+  '</div>';
+// 范围-只有时分秒
+var RANGEPICKERMAINONLYTIMETPL = '<div class="c-datepicker-picker c-datepicker-date-range-picker c-datepicker-popper {{hasTime}}" x-placement="top-start">' +
+  '<div class="c-datepicker-picker__body-wrapper">' +
+  '<div class="c-datepicker-picker__body">' +
+  '<div class="c-datepicker-date-range-picker__time-header">' +
+  '<div class="c-datepicker-date-range-picker__time-content c-datepicker-date-picker__onlyTime-content">' +
+  PICKEROLNLYTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-range-picker').replace(/{{name}}/g, '开始时间') +
+  '</div>' +
+  '<div class="c-datepicker-date-range-picker__time-content c-datepicker-date-picker__onlyTime-content">' +
+  PICKEROLNLYTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-range-picker').replace(/{{name}}/g, '结束时间') +
+  '</div>' +
+  '</div>' +
+  '</div>' +
+  '</div>' +
+  PICKERFOOTERONLYTIMETPL+
+  // PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-clear').replace(/{{text}}/g, '清空') +
+  PICKERARROWTPL +
+  '</div>';
 var PICKERFOOTERNOWBUTTON = PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-now').replace(/{{text}}/g, '此刻');
 var PICKERFOOTERCLEARBUTTON = PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-clear').replace(/{{text}}/g, '清空');
 // 单个
@@ -349,6 +450,17 @@ var DATEPICKERMAINTPL = '<div class="c-datepicker-picker c-datepicker-date-picke
   '</div>' +
   '</div>' +
   '{{footerButton}}' +
+  PICKERARROWTPL +
+  '</div>';
+// 单个-只有时分秒
+var DATEPICKERMAINOLNLYTIMETPL = '<div class="c-datepicker-picker c-datepicker-date-picker c-datepicker-popper {{hasTime}}" x-placement="top-start">' +
+  '<div class="c-datepicker-picker__body-wrapper">' +
+  '<div class="c-datepicker-picker__body">' +
+  '<div class="c-datepicker-date-picker__time-header c-datepicker-date-picker__onlyTime-content">' +
+  PICKEROLNLYTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-picker').replace(/{{name}}/g, '') +
+  '</div>' +
+  '</div>' +
+  '</div>' +
   PICKERARROWTPL +
   '</div>';
 var EVERYMONTHHASDAY = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
