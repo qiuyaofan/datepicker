@@ -264,6 +264,8 @@ $('.J-datepicker-range-betweenMonth').datePicker({
 
 ## Changelog
 
+2019-04-13：添加HH:mm:ss格式，修复直接input输入修改表单时，对最大值最小值、范围的限制
+
 2019-01-09：添加hide回调函数类型
 
 2018-09-17：添加支持父级div.c-datepicker-box滚动，日期选择框跟随input滚动
