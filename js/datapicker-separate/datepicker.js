@@ -807,6 +807,8 @@ $.extend(DatePicker.prototype, {
     this.pickerObject.$input.on('click', function () {
       var _this = $(this).data('datepicker');
       if (!_this.pickerObject.$container.data('isShow')){
+        // 重置状态
+        $('.c-datepicker-picker').data('isShow', false);
         _this.pickerObject.$container.data('isShow', true);
         _this.show();
       }
