@@ -63,14 +63,15 @@ $.extend(Year.prototype, {
     var html = '';
     var val = this.picker.$input.val();
     var activeYear = val ? API.getTimeFormat(moment(API.newDateFixed(this.picker, val))).year : false;
-    this.picker.$container.find('.c-datepicker-date-picker__header-year span').text(min + '年-' + (min + 9));
+    var nameOptions = $.fn.datePicker.dates[this.picker.language];
+    this.picker.$container.find('.c-datepicker-date-picker__header-year span').text(min + nameOptions.headerYearLink+'-' + (min + 9));
     for (var index = 0; index < 10; index++) {
       var _val = min + index;
       var className = _val == activeYear ? 'current available' : 'available';
       if (_val < this.picker.minJson.year || _val > this.picker.maxJson.year) {
         className += ' disabled';
       }
-      temp += TDTPL.replace('{{value}}', _val).replace('{{today}}', className);
+      temp += RENDERAPI.tdTpl(className, _val);
       if ((index + 1) % 4 === 0) {
         html += '<tr>' + temp + '</tr>';
         temp = '';
@@ -79,10 +80,8 @@ $.extend(Year.prototype, {
     if (temp) {
       html += '<tr>' + temp + '</tr>';
     }
-    html = TEARTPL.replace('{{body}}', html).replace('{{class}}', 'c-datepicker-year-table');
+    html = RENDERAPI.tableTpl('c-datepicker-year-table', html);
     return html;
   }
 });
-
-
-  /*==============END YEAR============*/
+/*==============END YEAR============*/

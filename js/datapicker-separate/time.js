@@ -161,9 +161,9 @@ $.extend(Time.prototype, {
     if (type[0]) {
       for (var i = 0; i < 24; i++) {
         var className = hour === i ? 'active' : '';
-        li += TIMELITPL.replace('{{time}}', API.fillTime(i)).replace('{{className}}', className);
+        li += RENDERAPI.timeLiTpl(className, API.fillTime(i));
       }
-      html += TIMETPL.replace('{{li}}', li).replace('{{className}}', 'hour');
+      html += RENDERAPI.timeTpl('hour', li);
       li = '';
     }
 
@@ -171,21 +171,21 @@ $.extend(Time.prototype, {
     if (type[1]) {
       for (var j = 0; j < 60; j++) {
         var className = minute === j ? 'active' : '';
-        li += TIMELITPL.replace('{{time}}', API.fillTime(j)).replace('{{className}}', className);
+        li += RENDERAPI.timeLiTpl(className, API.fillTime(j));
       }
-      html += TIMETPL.replace('{{li}}', li).replace('{{className}}', 'minute');
+      html += RENDERAPI.timeTpl('minute', li);
       li = '';
     }
     // 秒
     if (type[2]) {
       for (var k = 0; k < 60; k++) {
         var className = second === k ? 'active' : '';
-        li += TIMELITPL.replace('{{time}}', API.fillTime(k)).replace('{{className}}', className);
+        li += RENDERAPI.timeLiTpl(className, API.fillTime(k));
       }
-      html += TIMETPL.replace('{{li}}', li).replace('{{className}}', 'second');
+      html += RENDERAPI.timeTpl('second', li);
     }
-
-    html = TIMEMAINTPL.replace('{{time}}', html);
+    var nameOptions = $.fn.datePicker.dates[this.picker.language];
+    html = RENDERAPI.timeMainTpl(nameOptions,html);
     return html;
   }
 });

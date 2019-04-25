@@ -88,6 +88,8 @@ $.extend(Month.prototype, {
     var val = this.picker.$input.val();
     var formatResult = API.getTimeFormat(moment(API.newDateFixed(this.picker, val)));
     var activeMonth = val && (formatResult.year == nowYear) ? formatResult.month : false;
+    var nameOptions = $.fn.datePicker.dates[this.picker.language];
+    var words = RENDERAPI.monthWords(nameOptions);
     for (var index = 0; index < 12; index++) {
       var _val = min + index;
       // var className = 'available';
@@ -96,13 +98,13 @@ $.extend(Month.prototype, {
       if (isSame && (_val < minMonth || _val > maxMonth)) {
         className += ' disabled';
       }
-      temp += TDTPL.replace('{{value}}', MONTHWORDS[index]).replace('{{today}}', className);
+      temp += RENDERAPI.tdTpl(className, words[index]);
       if ((index + 1) % 4 === 0) {
         html += '<tr>' + temp + '</tr>';
         temp = '';
       }
     }
-    html = TEARTPL.replace('{{body}}', html).replace('{{class}}', 'c-datepicker-month-table');
+    html = RENDERAPI.tableTpl('c-datepicker-month-table', html);
     return html;
   }
 });

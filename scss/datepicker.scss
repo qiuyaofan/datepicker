@@ -781,3 +781,23 @@ div.c-datepicker-data-input {
   display: inline-block;
   text-align: center;
 }
+
+.is-en {
+  &.c-datepicker-date-range-picker {
+    .is-right .c-datepicker-date-range-picker__header-year {
+      margin-left: 93px;
+    }
+
+    .is-right .c-datepicker-date-range-picker__header-month {
+      margin-right: 22px;
+    }
+
+    .is-left .c-datepicker-date-range-picker__header-year {
+      margin-left: 35px;
+    }
+  }
+
+  .c-datepicker-time-panel__btn {
+    margin: 0;
+  }
+}

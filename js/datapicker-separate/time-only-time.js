@@ -89,16 +89,6 @@ $.extend(OnlyTime.prototype, {
         var panelVal = valArr.join(':');
         // 计算当前值与最大最小值的关系,panel显示值和input val 值不一定一样
         var val = TIMEONLYAPI.checkMinMaxGetVal(_this.picker, valArr, inputIndex);
-        // var valSecond = API.countSecond(valArr);
-        // var minSecond = _this.picker[type].minSecond;
-        // var maxSecond = _this.picker[type].maxSecond;
-        // if (valSecond < minSecond){
-        //   val = _this.picker[type].minVal;
-        // } else if (valSecond > maxSecond){
-        //   val = _this.picker[type].maxVal;
-        // }else{
-        //   val=panelVal;
-        // }
         // 更新input val
         $time.val(val);
         // 设置当前不可选部分
@@ -200,7 +190,7 @@ $.extend(OnlyTime.prototype, {
     var $time = this.picker.$container.find('.c-datepicker-time-panel');
     // 初始化，添加html
     if (!$time.length) {
-      var html = DATEPICKERAPI.renderTimePanelHtml(type, time1[0], time1[1], time1[2]);
+      var html = DATEPICKERAPI.renderTimePanelHtml(this.picker,type, time1[0], time1[1], time1[2]);
       this.picker.$container.find('.c-datepicker-date-picker__editor-wrap').append(html);
       this.picker.$container.data('time', this);
       this.setMinMaxHour();
@@ -222,8 +212,8 @@ $.extend(OnlyTime.prototype, {
     var $time = this.picker.$container.find('.c-datepicker-time-panel');
     // 初始化，添加html
     if (!$time.length) {
-      var html1 = DATEPICKERAPI.renderTimePanelHtml(type, time1[0], time1[1], time1[2]);
-      var html2 = DATEPICKERAPI.renderTimePanelHtml(type, time2[0], time2[1], time2[2]);
+      var html1 = DATEPICKERAPI.renderTimePanelHtml(this.picker,type, time1[0], time1[1], time1[2]);
+      var html2 = DATEPICKERAPI.renderTimePanelHtml(this.picker,type, time2[0], time2[1], time2[2]);
       var $content = this.picker.$container.find('.c-datepicker-date-range-picker__time-content');
       $content.eq(0).find('.c-datepicker-date-range-picker__editor-wrap').append(html1);
       $content.eq(1).find('.c-datepicker-date-range-picker__editor-wrap').append(html2);

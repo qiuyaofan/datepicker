@@ -9,6 +9,7 @@ function RangeDatePickerTime(datePickerObject) {
   this.hasTime = true;
   this.onlyTime = true;
   this.params = {};
+  this.language=this.config.language||'zh-CN';
   this.timeMin = API.timeVal(this, 'min');
   this.timeMax = API.timeVal(this, 'max');
   this.configMinMax = API.getOnlyTimeMinMax(this);
@@ -27,11 +28,14 @@ $.extend(RangeDatePickerTime.prototype, {
     // 初始化splitStr，params.format，minJson，maxJson
     DATEPICKERAPI.initParams(this);
     var hasTime = 'has-time only-time';
-    var TPL = this.config.isRange ? RANGEPICKERMAINONLYTIMETPL : DATEPICKERMAINOLNLYTIMETPL;
-    var $datePickerHtml = $(TPL.replace(/{{table}}/g, '').replace('{{hasTime}}', hasTime));
+    var nameOptions = $.fn.datePicker.dates[this.language];
+    var TPL = this.config.isRange ? RENDERAPI.rangePickerMainOnlyTimeTpl(nameOptions, hasTime) : RENDERAPI.datePickerMainOnlyTimeTpl(hasTime);
+    // var TPL = this.config.isRange ? RANGEPICKERMAINONLYTIMETPL : DATEPICKERMAINOLNLYTIMETPL;
+    var $datePickerHtml = $(TPL.replace(/{{table}}/g, ''));
     $('body').append($datePickerHtml);
     this.$container = $datePickerHtml;
     this.$container.data('picker', this);
+    this.$container.addClass('is-' + this.language);
     // 初始化年月日十分秒panel
     this.timeObject = new OnlyTime(this);
   },

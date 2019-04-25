@@ -1,4 +1,5 @@
 /*==============BEGIN API============*/
+
 var defaultOptions = {
   min: false,
   max: false,
@@ -8,6 +9,7 @@ var defaultOptions = {
   shortcutOptions: [],
   // between:数字：30，string:month/year
   between: false,
+  language: 'zh-CN',
   hide: function () { },
   show: function () { }
 };
@@ -97,7 +99,7 @@ var API = {
   getOnlyTimeFormat: function (_moment) {
     return [_moment.hour(),_moment.minute(),_moment.second()];
   },
-  getConcatTime(hour, minute, second){
+  getConcatTime: function (hour, minute, second){
     return API.fillTime(hour) + ':' + API.fillTime(minute) + ':' + API.fillTime(second);
   },
   newDateFixed: function (_this, temp) {
@@ -105,7 +107,8 @@ var API = {
     // Safari 年月模式只能用-,其他用/
     var str = !isSafari||(isSafari && _this.config.format==='YYYY-MM')?'-':'/';
     var reg = new RegExp(_this.splitStr, 'g');
-    return !temp ? new Date() : _this.splitStr ? new Date(temp.replace(reg, str)) : new Date(temp);
+    var result = !temp ? new Date() : _this.splitStr ? new Date(temp.replace(reg, str)) : new Date(temp);
+    return result;
   },
   // 范围获取具体年月日
   getRangeTimeFormat: function (_this, $input) {
@@ -280,191 +283,277 @@ var API = {
   }
 };
 var JQTABLESCROLLWIDTH = API.getScrollBarWidth();
-
-var TEARTPL = '<table class="{{class}}" style="">' +
-  '<tbody>' +
-  '{{body}}' +
-  '</tbody>' +
-  '</table>';
-var TDTPL = '<td class="{{today}}">' +
-  '<div>' +
-  '<a class="cell">{{value}}</a>' +
-  '</div>' +
-  '</td>';
-var DAYHEADER = '<tr>' +
-  '<th>日</th>' +
-  '<th>一</th>' +
-  '<th>二</th>' +
-  '<th>三</th>' +
-  '<th>四</th>' +
-  '<th>五</th>' +
-  '<th>六</th>' +
-  '</tr>';
-var TIMELITPL = '<li class="c-datepicker-time-spinner__item {{className}}">{{time}}</li>';
-var TIMETPL = '<div class="c-datepicker-time-spinner__wrapper c-datepicker-scrollbar">' +
-  '<div class="c-datepicker-scrollbar__wrap {{className}}" style="max-height: inherit; margin-bottom: -' + JQTABLESCROLLWIDTH + 'px; margin-right: -' + JQTABLESCROLLWIDTH + 'px;">' +
-  '<ul class="c-datepicker-scrollbar__view c-datepicker-time-spinner__list">' +
-  '{{li}}' +
-  '</ul>' +
-  '</div>' +
-  '</div>';
-var TIMEMAINTPL = '<div class="c-datepicker-time-panel c-datepicker-popper" style="">' +
-  '<div class="c-datepicker-time-panel__content has-seconds">' +
-  '<div class="c-datepicker-time-spinner has-seconds">' +
-  '{{time}}' +
-  '</div>' +
-  '</div>' +
-  '<div class="c-datepicker-time-panel__footer">' +
-  '<button type="button" class="c-datepicker-time-panel__btn min">0点</button>' +
-  '<button type="button" class="c-datepicker-time-panel__btn max">23:59</button>' +
-  '<button type="button" class="c-datepicker-time-panel__btn cancel">取消</button>' +
-  '<button type="button" class="c-datepicker-time-panel__btn confirm">确定</button>' +
-  '</div>' +
-  '</div>';
-var SIDEBARBUTTON = '<button type="button" class="c-datepicker-picker__shortcut" data-value="{{day}}" data-time="{{time}}">{{name}}</button>';
-var SIDEBARTPL = '<div class="c-datepicker-picker__sidebar">' +
-  '{{button}}' +
-  '</div>';
-var PICKERFOOTERTPL = '<div class="c-datepicker-picker__footer" style="">' +
-  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini {{className}}">' +
-  '<span>' +
-  '{{text}}' +
-  '</span>' +
-  '</button>' +
-  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
-  '<span>' +
-  '确定' +
-  '</span>' +
-  '</button>' +
-  '</div>';
-var PICKERARROWTPL = '<div x-arrow="" class="popper__arrow" style="left: 35px;"></div>';
-var PICKERHEADERTPL = '<div class="{{className}}__header">' +
-  '{{prev}}' +
-  '<span role="button" class="{{className}}__header-label {{className}}__header-year"><span>{{year}}</span> 年</span>' +
-  '<span role="button" class="{{className}}__header-label {{className}}__header-month"><span>{{month}}</span> 月</span>' +
-  '{{next}}' +
-  '</div>';
-PICKERHEADERPREVTPL = '<i class="kxiconfont icon-first c-datepicker-picker__icon-btn {{className}}__prev-btn year" aria-label="前一年"></i>' +
-  '<i class="kxiconfont icon-left c-datepicker-picker__icon-btn {{className}}__prev-btn month" aria-label="上个月"></i>';
-PICKERHEADERNEXTTPL = '<i class="kxiconfont icon-right c-datepicker-picker__icon-btn {{className}}__next-btn month" aria-label="下个月"></i>' +
-  '<i class="kxiconfont icon-last c-datepicker-picker__icon-btn {{className}}__next-btn year" aria-label="后一年"></i>';
-PICKERHEADERNEXTSINGLETPL = '<i class="kxiconfont icon-last c-datepicker-picker__icon-btn {{className}}__next-btn year" aria-label="后一年"></i>' +
-  '<i class="kxiconfont icon-right c-datepicker-picker__icon-btn {{className}}__next-btn month" aria-label="下个月"></i>';
-var PICKERTIMEHEADERTPL = '<span class="{{className}}__editor-wrap">' +
-  '<div class="c-datepicker-input c-datepicker-input--small">' +
-  '<input type="text" autocomplete="off" placeholder="选择日期" class="c-datepicker-input__inner c-datePicker__input-day">' +
-  '</div>' +
-  '</span>' +
-  '<span class="{{className}}__editor-wrap">' +
-  '<div class="c-datepicker-input c-datepicker-input--small">' +
-  '<input type="text" autocomplete="off" placeholder="选择时间" class="c-datepicker-input__inner c-datePicker__input-time">' +
-  '</div>' +
-  '</span>';
-// 只有时分秒
-var PICKEROLNLYTIMEHEADERTPL = '<span class="{{className}}__editor-wrap">' +
-  '<div class="c-datepicker-only-time-title">{{name}}</div>'+
-  '</span>';
-//  范围
-var RANGEPICKERMAINTPL = '<div class="c-datepicker-picker c-datepicker-date-range-picker c-datepicker-popper {{hasTime}} {{hasSidebar}}" x-placement="top-start">' +
-  '<div class="c-datepicker-picker__body-wrapper">' +
-  '{{sidebar}}' +
-  '<div class="c-datepicker-picker__body">' +
-  '<div class="c-datepicker-date-range-picker__time-header">' +
-  '<div class="c-datepicker-date-range-picker__time-content">' +
-  PICKERTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-range-picker') +
-  '</div>' +
-  '<span class="kxiconfont icon-right"></span>' +
-  '<div class="c-datepicker-date-range-picker__time-content">' +
-  PICKERTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-range-picker') +
-  '</div>' +
-  '</div>' +
-  '<div class="c-datepicker-picker__body-content">' +
-  '<div class="c-datepicker-date-range-picker-panel__wrap is-left">' +
-  PICKERHEADERTPL.replace(/{{prev}}/g, PICKERHEADERPREVTPL).replace(/{{next}}/g, '').replace(/{{className}}/g, 'c-datepicker-date-range-picker') +
-  '<div class="c-datepicker-picker__content">' +
-  '{{table}}' +
-  '</div>' +
-  '</div>' +
-  '<div class="c-datepicker-date-range-picker-panel__wrap is-right">' +
-  PICKERHEADERTPL.replace(/{{prev}}/g, '').replace(/{{next}}/g, PICKERHEADERNEXTTPL).replace(/{{year}}/g, '{{yearEnd}}').replace(/{{month}}/g, '{{monthEnd}}').replace(/{{className}}/g, 'c-datepicker-date-range-picker') +
-  '<div class="c-datepicker-picker__content">' +
-  '{{table}}' +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-clear').replace(/{{text}}/g, '清空') +
-  PICKERARROWTPL +
-  '</div>';
-//  范围-只有时分秒
-var PICKERFOOTERONLYTIMETPL = '<div class="c-datepicker-picker__footer" style="">' +
-  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini  c-datepicker-picker__btn-clear">' +
-  '<span>' +
-  '清空' +
-  '</span>' +
-  '</button>' +
-  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini  c-datepicker-picker__btn-cancel">' +
-  '<span>' +
-  '取消' +
-  '</span>' +
-  '</button>' +
-  '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
-  '<span>' +
-  '确定' +
-  '</span>' +
-  '</button>' +
-  '</div>';
-// 范围-只有时分秒
-var RANGEPICKERMAINONLYTIMETPL = '<div class="c-datepicker-picker c-datepicker-date-range-picker c-datepicker-popper {{hasTime}}" x-placement="top-start">' +
-  '<div class="c-datepicker-picker__body-wrapper">' +
-  '<div class="c-datepicker-picker__body">' +
-  '<div class="c-datepicker-date-range-picker__time-header">' +
-  '<div class="c-datepicker-date-range-picker__time-content c-datepicker-date-picker__onlyTime-content">' +
-  PICKEROLNLYTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-range-picker').replace(/{{name}}/g, '开始时间') +
-  '</div>' +
-  '<div class="c-datepicker-date-range-picker__time-content c-datepicker-date-picker__onlyTime-content">' +
-  PICKEROLNLYTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-range-picker').replace(/{{name}}/g, '结束时间') +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  PICKERFOOTERONLYTIMETPL+
-  // PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-clear').replace(/{{text}}/g, '清空') +
-  PICKERARROWTPL +
-  '</div>';
-var PICKERFOOTERNOWBUTTON = PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-now').replace(/{{text}}/g, '此刻');
-var PICKERFOOTERCLEARBUTTON = PICKERFOOTERTPL.replace(/{{className}}/g, 'c-datepicker-picker__btn-clear').replace(/{{text}}/g, '清空');
-// 单个
-var DATEPICKERMAINTPL = '<div class="c-datepicker-picker c-datepicker-date-picker c-datepicker-popper {{hasTime}} {{hasSidebar}}" x-placement="top-start">' +
-  '<div class="c-datepicker-picker__body-wrapper">' +
-  '{{sidebar}}' +
-  '<div class="c-datepicker-picker__body">' +
-  '<div class="c-datepicker-date-picker__time-header">' +
-  PICKERTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-picker') +
-  '</div>' +
-  PICKERHEADERTPL.replace(/{{prev}}/g, PICKERHEADERPREVTPL).replace(/{{next}}/g, PICKERHEADERNEXTSINGLETPL).replace(/{{className}}/g, 'c-datepicker-date-picker') +
-  ' <div class="c-datepicker-picker__content">' +
-  '{{table}}' +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  '{{footerButton}}' +
-  PICKERARROWTPL +
-  '</div>';
-// 单个-只有时分秒
-var DATEPICKERMAINOLNLYTIMETPL = '<div class="c-datepicker-picker c-datepicker-date-picker c-datepicker-popper {{hasTime}}" x-placement="top-start">' +
-  '<div class="c-datepicker-picker__body-wrapper">' +
-  '<div class="c-datepicker-picker__body">' +
-  '<div class="c-datepicker-date-picker__time-header c-datepicker-date-picker__onlyTime-content">' +
-  PICKEROLNLYTIMEHEADERTPL.replace(/{{className}}/g, 'c-datepicker-date-picker').replace(/{{name}}/g, '') +
-  '</div>' +
-  '</div>' +
-  '</div>' +
-  PICKERARROWTPL +
-  '</div>';
+var RENDERAPI={
+  tableTpl: function (className, content){
+    var html = '<table class="' + className+'" style="">' +
+      '<tbody>' +
+      content +
+      '</tbody>' +
+    '</table>';
+    return html;
+  },
+  tdTpl: function (today,value){
+    var html = '<td class="' + today+'">' +
+      '<div>' +
+      '<a class="cell">' + value+'</a>' +
+      '</div>' +
+      '</td>';
+      return html;
+  },
+  dayHeader: function (nameOptions){
+    var days = nameOptions.days;
+    var thHtml='';
+    for (var i = 0, len=days.length; i < len; i++) {
+      thHtml += '<th>' + days[i]+'</th>';
+    }
+    var html = '<tr>' +
+      thHtml +
+      '</tr>';
+      return html;
+  },
+  timeLiTpl: function (className,time){
+    var html = '<li class="c-datepicker-time-spinner__item ' + className + '">' + time+'</li>';
+    return html;
+  },
+  timeTpl: function (className,li){
+    var html = '<div class="c-datepicker-time-spinner__wrapper c-datepicker-scrollbar">' +
+      '<div class="c-datepicker-scrollbar__wrap ' + className+'" style="max-height: inherit; margin-bottom: -' + JQTABLESCROLLWIDTH + 'px; margin-right: -' + JQTABLESCROLLWIDTH + 'px;">' +
+      '<ul class="c-datepicker-scrollbar__view c-datepicker-time-spinner__list">' +
+      li +
+      '</ul>' +
+      '</div>' +
+      '</div>';
+    return html;
+  },
+  timeMainTpl: function (nameOptions,time){
+    var html = '<div class="c-datepicker-time-panel c-datepicker-popper" style="">' +
+      '<div class="c-datepicker-time-panel__content has-seconds">' +
+      '<div class="c-datepicker-time-spinner has-seconds">' +
+      time +
+      '</div>' +
+      '</div>' +
+      '<div class="c-datepicker-time-panel__footer">' +
+      '<button type="button" class="c-datepicker-time-panel__btn min">' + nameOptions.zero+'</button>' +
+      '<button type="button" class="c-datepicker-time-panel__btn max">23:59</button>' +
+      '<button type="button" class="c-datepicker-time-panel__btn cancel">' + nameOptions.cancel +'</button>' +
+        '<button type="button" class="c-datepicker-time-panel__btn confirm">' + nameOptions.confirm+'</button>' +
+      '</div>' +
+      '</div>';
+      return html;
+  },
+  sideBarButton: function (day, time, name){
+    var html = '<button type="button" class="c-datepicker-picker__shortcut" data-value="' + day + '" data-time="' + time + '">' + name+'</button>';
+    return html;
+  },
+  sideBarTpl: function (button){
+    var html = '<div class="c-datepicker-picker__sidebar">' +
+      button +
+      '</div>';
+      return html;
+  },
+  pickerFooterTpl: function (nameOptions,className, text){
+    var html = '<div class="c-datepicker-picker__footer" style="">' +
+      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini ' + className+'">' +
+      '<span>' +
+      text +
+      '</span>' +
+      '</button>' +
+      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
+      '<span>' +
+      nameOptions.confirm +
+      '</span>' +
+      '</button>' +
+      '</div>';
+      return html;
+  },
+  pickerArrowTpl:function(){
+    return '<div x-arrow="" class="popper__arrow" style="left: 35px;"></div>';
+  },
+  pickerHeaderTpl: function (nameOptions,className, prev, next, year, month){
+    var html = '<div class="'+className+'__header">' +
+      prev +
+      '<span role="button" class="' + className + '__header-label ' + className + '__header-year"><span>' + year + '</span> ' + nameOptions.headerYearLink+'</span>' +
+      '<span role="button" class="' + className + '__header-label ' + className + '__header-month"><span>' + month + '</span> ' + nameOptions.units[1] +'</span>' +
+      next +
+      '</div>';
+      return html;
+  },
+  pickerHeaderPrevTpl: function (nameOptions,className){
+    var html = '<i class="kxiconfont icon-first c-datepicker-picker__icon-btn ' + className + '__prev-btn year" aria-label="' + nameOptions.prevYear +'"></i>' +
+      '<i class="kxiconfont icon-left c-datepicker-picker__icon-btn ' + className + '__prev-btn month" aria-label="' + nameOptions.nextMonth +'"></i>';
+    return html;
+  },
+  pickerHeaderNextTpl: function (nameOptions,className) {
+    var html = '<i class="kxiconfont icon-right c-datepicker-picker__icon-btn ' + className + '__next-btn month" aria-label="' + nameOptions.nextMonth +'"></i>' +'<i class="kxiconfont icon-last c-datepicker-picker__icon-btn ' + className + '__next-btn year" aria-label="' + nameOptions.nextYear +'"></i>';
+    return html;
+  },
+  pickerHeaderNextSingleTpl: function (nameOptions,className) {
+    var html = '<i class="kxiconfont icon-last c-datepicker-picker__icon-btn ' + className + '__next-btn year" aria-label="' + nameOptions.nextYear +'"></i>' +
+      '<i class="kxiconfont icon-right c-datepicker-picker__icon-btn ' + className + '__next-btn month" aria-label="' + nameOptions.nextMonth +'"></i>';
+    return html;
+  },
+  pickerTimeHeaderTpl: function (nameOptions,className){
+    var html = '<span class="'+className+'__editor-wrap">' +
+      '<div class="c-datepicker-input c-datepicker-input--small">' +
+      '<input type="text" autocomplete="off" placeholder="' + nameOptions.chooseDay+'" class="c-datepicker-input__inner c-datePicker__input-day">' +
+      '</div>' +
+      '</span>' +
+      '<span class="'+className+'__editor-wrap">' +
+      '<div class="c-datepicker-input c-datepicker-input--small">' +
+      '<input type="text" autocomplete="off" placeholder="' + nameOptions.chooseTime +'" class="c-datepicker-input__inner c-datePicker__input-time">' +
+      '</div>' +
+      '</span>';
+      return html;
+  },
+  pickerOnlyTimeHeaderTpl: function (className, name){
+    var html = '<span class="' + className+'__editor-wrap">' +
+      '<div class="c-datepicker-only-time-title">' + name+'</div>' +
+      '</span>';
+      return html;
+  },
+  rangePickerMainTpl: function (nameOptions,hasTime,hasSidebar,yearEnd, monthEnd, sidebar, table){
+    var className ='c-datepicker-date-range-picker';
+    var timeHeader = RENDERAPI.pickerTimeHeaderTpl(nameOptions,className);
+    var prev = RENDERAPI.pickerHeaderPrevTpl(nameOptions,className);
+    var next = RENDERAPI.pickerHeaderNextTpl(nameOptions,className);
+    var pickerHeader = RENDERAPI.pickerHeaderTpl(nameOptions,className,prev, '','{{year}}','{{month}}');
+    var pickerHeader2 = RENDERAPI.pickerHeaderTpl(nameOptions,className, '', next, yearEnd, monthEnd);
+    var footer = RENDERAPI.pickerFooterTpl(nameOptions,'c-datepicker-picker__btn-clear', nameOptions.clear);
+    var arrow = RENDERAPI.pickerArrowTpl();
+    var html = '<div class="c-datepicker-picker c-datepicker-date-range-picker c-datepicker-popper ' + hasTime + ' ' + hasSidebar+'" x-placement="top-start">' +
+      '<div class="c-datepicker-picker__body-wrapper">' +
+      sidebar +
+      '<div class="c-datepicker-picker__body">' +
+      '<div class="c-datepicker-date-range-picker__time-header">' +
+      '<div class="c-datepicker-date-range-picker__time-content">' +
+      timeHeader+
+      '</div>' +
+      '<span class="kxiconfont icon-right"></span>' +
+      '<div class="c-datepicker-date-range-picker__time-content">' +
+      timeHeader+
+      '</div>' +
+      '</div>' +
+      '<div class="c-datepicker-picker__body-content">' +
+      '<div class="c-datepicker-date-range-picker-panel__wrap is-left">' +
+      pickerHeader +
+      '<div class="c-datepicker-picker__content">' +
+      table +
+      '</div>' +
+      '</div>' +
+      '<div class="c-datepicker-date-range-picker-panel__wrap is-right">' +
+      pickerHeader2 +
+      '<div class="c-datepicker-picker__content">' +
+      table +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      footer+
+      arrow +
+      '</div>';
+      return html;
+  },
+  pickerFooterOnlyTimeTpl: function (nameOptions){
+    //  范围-只有时分秒
+    var html = '<div class="c-datepicker-picker__footer" style="">' +
+      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini  c-datepicker-picker__btn-clear">' +
+      '<span>' +
+      nameOptions.clear +
+      '</span>' +
+      '</button>' +
+      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini  c-datepicker-picker__btn-cancel">' +
+      '<span>' +
+      nameOptions.cancel +
+      '</span>' +
+      '</button>' +
+      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
+      '<span>' +
+      nameOptions.confirm +
+      '</span>' +
+      '</button>' +
+      '</div>';
+      return html;
+  },
+  rangePickerMainOnlyTimeTpl: function (nameOptions,hasTime){
+    var className ='c-datepicker-date-range-picker';
+    var headerBegin = RENDERAPI.pickerOnlyTimeHeaderTpl(className, nameOptions.begin);
+    var headerEnd = RENDERAPI.pickerOnlyTimeHeaderTpl(className, nameOptions.end);
+    var footer = RENDERAPI.pickerFooterOnlyTimeTpl(nameOptions);
+    var arrow = RENDERAPI.pickerArrowTpl();
+    var html = '<div class="c-datepicker-picker c-datepicker-date-range-picker c-datepicker-popper ' + hasTime+'" x-placement="top-start">' +
+    '<div class="c-datepicker-picker__body-wrapper">' +
+    '<div class="c-datepicker-picker__body">' +
+    '<div class="c-datepicker-date-range-picker__time-header">' +
+    '<div class="c-datepicker-date-range-picker__time-content c-datepicker-date-picker__onlyTime-content">' +
+      headerBegin +
+    '</div>' +
+    '<div class="c-datepicker-date-range-picker__time-content c-datepicker-date-picker__onlyTime-content">' +
+      headerEnd +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+      footer +
+      arrow +
+    '</div>';
+    return html;
+  },
+  pickerFooterNowButton:function(nameOptions){
+    var html = RENDERAPI.pickerFooterTpl(nameOptions,'c-datepicker-picker__btn-now', nameOptions.now);
+    return html;
+  },
+  pickerFooterClearButton: function (nameOptions) {
+    var html = RENDERAPI.pickerFooterTpl(nameOptions,'c-datepicker-picker__btn-clear', nameOptions.clear); 
+    return html;
+  },
+  datePickerMainTpl: function (nameOptions){
+    var className = 'c-datepicker-date-picker';
+    var timeHeader = RENDERAPI.pickerTimeHeaderTpl(nameOptions,className);
+    var prev = RENDERAPI.pickerHeaderPrevTpl(nameOptions,className);
+    var next = RENDERAPI.pickerHeaderNextSingleTpl(nameOptions,className);
+    var pickerHeader = RENDERAPI.pickerHeaderTpl(nameOptions, className, prev, next, '{{year}}', '{{month}}');
+    var arrow = RENDERAPI.pickerArrowTpl();
+    // 单个
+    var html = '<div class="c-datepicker-picker c-datepicker-date-picker c-datepicker-popper {{hasTime}} {{hasSidebar}}" x-placement="top-start">' +
+      '<div class="c-datepicker-picker__body-wrapper">' +
+      '{{sidebar}}' +
+      '<div class="c-datepicker-picker__body">' +
+      '<div class="c-datepicker-date-picker__time-header">' +
+      timeHeader +
+      '</div>' +
+      pickerHeader +
+      ' <div class="c-datepicker-picker__content">' +
+      '{{table}}' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '{{footerButton}}' +
+      arrow+
+      '</div>';
+    return html;
+  },
+  datePickerMainOnlyTimeTpl: function (hasTime){
+    var header = RENDERAPI.pickerOnlyTimeHeaderTpl('c-datepicker-date-picker', '');
+    var arrow = RENDERAPI.pickerArrowTpl();
+    // 单个-只有时分秒
+    var html = '<div class="c-datepicker-picker c-datepicker-date-picker c-datepicker-popper ' + hasTime+'" x-placement="top-start">' +
+      '<div class="c-datepicker-picker__body-wrapper">' +
+      '<div class="c-datepicker-picker__body">' +
+      '<div class="c-datepicker-date-picker__time-header c-datepicker-date-picker__onlyTime-content">' +
+      header +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      arrow +
+      '</div>';
+    return html;
+  },
+  monthWords:function(nameOptions){
+    return nameOptions.months;
+  }
+};
 var EVERYMONTHHASDAY = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-var MONTHWORDS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
   /*==============END API============*/
 
 /*===============BEGIN 发布订阅==================*/

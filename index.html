@@ -50,6 +50,14 @@
         </div>
       </div>
       <div class="mt40">
+        <div>（❤️新增）英文版。年月日时分秒单个选择，最小值：2018-01-01 04:00:00 ，最大值：2019-04-29 20:59:59 <span class="c999">(YYYY-MM-DD HH:mm:ss 单个)</span>
+        </div>
+        <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-en mt10">
+          <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
+          <input type="text" autocomplete="off" name="" placeholder="choose date" class=" c-datepicker-data-input">
+        </div>
+      </div>
+      <div class="mt40">
         <div>年月日单个选择，无最大最小值 <span class="c999">(YYYY-MM-DD 单个)</span></div>
         <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-day mt10">
           <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
@@ -190,6 +198,8 @@
 
     <script src="js/datepicker.all.js"></script>
     <!-- <script src="js/datepicker.all.min.js"></script> -->
+
+    <script src="js/datepicker.en.js"></script>
     <script type="text/javascript">
      
       $(function(){
@@ -203,6 +213,27 @@
           isRange: true,
           min: '04:23:11',
           max: '20:59:59'
+        });
+        //时分秒年月日单个
+        $('.J-datepicker-en').datePicker({
+          hasShortcut: true,
+          min: '2018-01-01 04:00:00',
+          max: '2019-04-29 20:59:59',
+          language: 'en',
+          shortcutOptions: [{
+            name: 'today',
+            day: '0'
+          }, {
+            name: 'yesterday',
+            day: '-1',
+            time: '00:00:00'
+          }, {
+            name: 'last week',
+            day: '-7'
+          }],
+          hide: function () {
+            console.info(this)
+          }
         });
         var DATAPICKERAPI = {
           // 默认input显示当前月,自己获取后填充

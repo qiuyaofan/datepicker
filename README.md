@@ -264,6 +264,8 @@ $('.J-datepicker-range-betweenMonth').datePicker({
 
 ## Changelog
 
+2019-04-25：添加语言包扩展，例如换为英文，则加载datepicker.en.js,并参数添加language:'en'调用。默认为中文
+
 2019-04-13：添加HH:mm:ss格式，修复直接input输入修改表单时，对最大值最小值、范围的限制
 
 2019-01-09：添加hide回调函数类型

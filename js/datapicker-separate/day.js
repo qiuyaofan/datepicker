@@ -359,7 +359,9 @@ $.extend(Day.prototype, {
     var day = API.getMonthDay(month, year);
     var weekday = moment().set({ 'year': year, 'month': month - 1, 'date': 1 }).weekday();
     var weekdayLast = moment().set({ 'year': year, 'month': month - 1, 'date': day }).weekday();
-    var html = DAYHEADER;
+    // var html = DAYHEADER;
+    var nameOptions = $.fn.datePicker.dates[this.picker.language];
+    var html = RENDERAPI.dayHeader(nameOptions);
     var min = 1;
     var temp = '';
     var row = 0;
@@ -367,7 +369,7 @@ $.extend(Day.prototype, {
     if (weekday != 0) {
       for (var prev = weekday - 1; prev >= 0; prev--) {
         var className = 'prev-month';
-        temp += TDTPL.replace('{{value}}', prevMonthDay - prev).replace('{{today}}', className);
+        temp += RENDERAPI.tdTpl(className, prevMonthDay - prev);
         if ((weekday - prev) % 7 === 0) {
           html += '<tr>' + temp + '</tr>';
           temp = '';
@@ -413,8 +415,7 @@ $.extend(Day.prototype, {
       if (isSame && (_val < minDay || _val > maxDay)) {
         className += ' disabled';
       }
-      // var className = _val === today ? _val === selectedDate ? 'current today available' : 'available';
-      temp += TDTPL.replace('{{value}}', _val).replace('{{today}}', className);
+      temp += RENDERAPI.tdTpl(className, _val);
       if ((begin + index + 1) % 7 === 0) {
         html += '<tr>' + temp + '</tr>';
         temp = '';
@@ -429,14 +430,14 @@ $.extend(Day.prototype, {
     var nextMax = (6 - row - 1) * 7 + (6 - weekdayLast);
     for (var next = 0; next < nextMax; next++) {
       var className = 'next-month';
-      temp += TDTPL.replace('{{value}}', 1 + next).replace('{{today}}', className);
+      temp += RENDERAPI.tdTpl(className, 1 + next);
       if ((begin + next + 1) % 7 === 0) {
         html += '<tr>' + temp + '</tr>';
         temp = '';
       }
     }
 
-    html = TEARTPL.replace('{{body}}', html).replace('{{class}}', 'c-datepicker-date-table');
+    html = RENDERAPI.tableTpl('c-datepicker-date-table', html);
     return html;
   },
   // 添加时间范围类名
