@@ -103,9 +103,10 @@ var API = {
     return API.fillTime(hour) + ':' + API.fillTime(minute) + ':' + API.fillTime(second);
   },
   newDateFixed: function (_this, temp) {
+    var isIE = !!window.ActiveXObject || "ActiveXObject" in window;
     var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    // Safari 年月模式只能用-,其他用/
-    var str = !isSafari||(isSafari && _this.config.format==='YYYY-MM')?'-':'/';
+    // Safari 年月模式只能用-,其他Safari、ie用/
+    var str = isIE || (isSafari && _this.config.format !== 'YYYY-MM') ? '/' : '-';
     var reg = new RegExp(_this.splitStr, 'g');
     var result = !temp ? new Date() : _this.splitStr ? new Date(temp.replace(reg, str)) : new Date(temp);
     return result;
