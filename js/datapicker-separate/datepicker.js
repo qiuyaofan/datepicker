@@ -502,6 +502,7 @@ $.extend(SingleDatePicker.prototype, {
   },
   clear: function () {
     this.$input.val('');
+    this.$container.find('.c-datePicker__input-day,.c-datePicker__input-time').val('');
     this.$container.find('td.available').removeClass('current');
   },
   show: function () {
