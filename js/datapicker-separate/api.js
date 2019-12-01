@@ -353,18 +353,27 @@ var RENDERAPI={
       return html;
   },
   pickerFooterTpl: function (nameOptions,className, text){
-    var html = '<div class="c-datepicker-picker__footer" style="">' +
-      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini ' + className+'">' +
-      '<span>' +
-      text +
-      '</span>' +
-      '</button>' +
-      '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
-      '<span>' +
-      nameOptions.confirm +
-      '</span>' +
-      '</button>' +
-      '</div>';
+      var clearHtml = '';
+      if (className === 'c-datepicker-picker__btn-now') {
+        clearHtml = '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini c-datepicker-picker__btn-clear">' +
+          '<span>' +
+          nameOptions.clear +
+          '</span>' +
+          '</button>'
+      }
+      var html = '<div class="c-datepicker-picker__footer" style="">' +
+        clearHtml +
+        '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini ' + className + '">' +
+        '<span>' +
+        text +
+        '</span>' +
+        '</button>' +
+        '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn confirm c-datepicker-button--default c-datepicker-button--mini is-plain">' +
+        '<span>' +
+        nameOptions.confirm +
+        '</span>' +
+        '</button>' +
+        '</div>';
       return html;
   },
   pickerArrowTpl:function(){

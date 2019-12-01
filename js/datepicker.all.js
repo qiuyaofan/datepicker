@@ -358,7 +358,16 @@
       return html;
     },
     pickerFooterTpl: function (nameOptions, className, text) {
+      var clearHtml='';
+      if (className ==='c-datepicker-picker__btn-now'){
+        clearHtml = '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini c-datepicker-picker__btn-clear">' +
+          '<span>' +
+          nameOptions.clear +
+          '</span>' +
+        '</button>' 
+      }
       var html = '<div class="c-datepicker-picker__footer" style="">' +
+        clearHtml+
         '<button type="button" class="c-datepicker-button c-datepicker-picker__link-btn c-datepicker-button--text c-datepicker-button--mini ' + className + '">' +
         '<span>' +
         text +
@@ -2388,6 +2397,7 @@
     },
     clear: function () {
       this.$input.val('');
+      this.$container.find('.c-datePicker__input-day,.c-datePicker__input-time').val('');
       this.$container.find('td.available').removeClass('current');
     },
     show: function () {
